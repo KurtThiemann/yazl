@@ -45,7 +45,7 @@ zipfile.end();
 No parameters.
 Nothing can go wrong.
 
-#### addFile(realPath, metadataPath, [options])
+#### addFile(realPath, metadataPath, [options], [readStreamOptions])
 
 Adds a file from the file system at `realPath` into the zipfile as `metadataPath`.
 Typically `metadataPath` would be calculated as `path.relative(root, realPath)`.
@@ -89,6 +89,9 @@ If `fileComment` is a `string`, it will be encoded with UTF-8.
 If `fileComment` is a `Buffer`, it should be a UTF-8 encoded string.
 In UTF-8, `fileComment` must be at most `0xffff` bytes in length.
 This becomes the "file comment" field in this entry's central directory file header.
+
+`readStreamOptions` is the options object passed to `fs.createReadStream()`. For more information, 
+see https://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options
 
 Internally, `fs.stat()` is called immediately in the `addFile` function,
 and `fs.createReadStream()` is used later when the file data is actually required.

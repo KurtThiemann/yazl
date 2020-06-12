@@ -19,7 +19,7 @@ function ZipFile() {
   this.forceZip64Eocd = false; // configurable in .end()
 }
 
-ZipFile.prototype.addFile = function(realPath, metadataPath, options) {
+ZipFile.prototype.addFile = function(realPath, metadataPath, options, readStreamOptions = {}) {
   var self = this;
   metadataPath = validateMetadataPath(metadataPath, false);
   if (options == null) options = {};
@@ -33,7 +33,7 @@ ZipFile.prototype.addFile = function(realPath, metadataPath, options) {
     if (options.mtime == null) entry.setLastModDate(stats.mtime);
     if (options.mode == null) entry.setFileAttributesMode(stats.mode);
     entry.setFileDataPumpFunction(function() {
-      var readStream = fs.createReadStream(realPath);
+      var readStream = fs.createReadStream(realPath, readStreamOptions);
       entry.state = Entry.FILE_DATA_IN_PROGRESS;
       readStream.on("error", function(err) {
         self.emit("error", err);
